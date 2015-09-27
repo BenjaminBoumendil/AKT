@@ -1,0 +1,73 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'ex/style.css' %}" />
+
+<div class="page-header">
+  <h1 align="center">Artwork Gallery</h1>
+</div>
+<ul>
+  {% for ressource in object_list %}
+    <div class="row panel panel-default">
+      <!-- Left section for title rank -->
+      <div class="col-xs-1 col-md-2 col-lg-4 leftsection panel">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Vote</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for title in view.get_titles %}
+              {% if title.ressource == ressource %}
+                <tr>
+                  <th scope="row">{{ title }}</th>
+                  <td>{{ title.user }}</td>
+                  <td><span class="badge">{{ title.vote }}</span></td>
+                  <td>
+                    <form action="" method="POST">
+                      {% csrf_token %}
+                      <button class="btn btn-default" type="submit" name="voteup" value="{{ title.id }}">Vote !</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right section for image -->
+      <div class="col-xs-1 col-md-2 col-lg-3 rightsection">
+        <img src="{{ ressource.image.url }}" height="420" width="820" align="middle" />
+        </br></br>
+
+        <!--Submit form title -->
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="input-group">
+              <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="wichressource" value="{{ ressource }}">
+                <button class="btn btn-default" type="submit">Submit !</button>
+              </form>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+
+      </div>
+        </br></br>
+    </div>
+  {% endfor %}
+</ul>

@@ -1,0 +1,9 @@
+.leftsecion {
+    float: left;
+}
+
+.rightsection {
+	float: right;
+    right: 40%;
+    padding: 15px;
+}
